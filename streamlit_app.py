@@ -2,9 +2,6 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import altair as alt
-import scipy
-#df = px.data.iris()  # iris is a pandas DataFrame
-import plotly
 import plotly.graph_objects as go
 import plotly.express as px
 import plotly.figure_factory as ff
