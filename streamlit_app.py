@@ -20,7 +20,10 @@ def getAlphaBeta(mu, sigma):
 
 with st.expander('Settings'):
   st.markdown('**What can this app do?**')
-  st.caption('This app shows the use of bayesian statistics for AB Testing using the beta distribution.')
+  st.caption('This app shows the use of bayesian statistics for AB Testing using the beta distribution. ')
+  st.latex(r'''
+    prior:Beta(a, b);  posterior:  Beta(x,y)
+    ''')
   st.latex(r'''
     x = NumberOfSuccesses + a
     ''')
