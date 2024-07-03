@@ -119,9 +119,22 @@ for i in range(len(values_list[0:])):
     box_plot_results = pd.concat([box_plot_results, new_df], ignore_index=True)
 
 
-tab0, tab1, tab2 = st.tabs(["Prior and Posterior Data", "All Data", "Difference vs Control"])
+tab0, tab1, tab2 = st.tabs(["All Data", "Difference vs Control", "Prior and Posterior Data"])
 
+
+  
 with tab0:
+  st.subheader('Boxplot graph:')
+  boxplot = px.box(box_plot_results, x="variant", y="CR", color="variant")
+  st.plotly_chart(boxplot, use_container_width=True)
+
+with tab1:
+  st.subheader('Boxplot graph:')
+  box_plot_results_wo_control = box_plot_results.loc[box_plot_results['variant'] != 'control']
+  boxplot_diff = px.box(box_plot_results_wo_control, x="variant", y="diff", color="variant")
+  st.plotly_chart(boxplot_diff, use_container_width=True)
+
+with tab2:
   prior_control_beta_values = np.random.beta(beta_prior_results['alpha'], beta_prior_results['beta'], 10000)
   df_prior_posterior = pd.DataFrame({'prior': prior_control_beta_values,
                        'posterior': control_beta_values})
@@ -132,19 +145,6 @@ with tab0:
     # Reduce opacity to see both histograms
   fig.update_traces(opacity=0.75)
   st.plotly_chart(fig, theme="streamlit")
-  
-with tab1:
-  st.subheader('Boxplot graph:')
-  boxplot = px.box(box_plot_results, x="variant", y="CR", color="variant")
-  st.plotly_chart(boxplot, use_container_width=True)
-
-with tab2:
-  st.subheader('Boxplot graph:')
-  box_plot_results_wo_control = box_plot_results.loc[box_plot_results['variant'] != 'control']
-  boxplot_diff = px.box(box_plot_results_wo_control, x="variant", y="diff", color="variant")
-  st.plotly_chart(boxplot_diff, use_container_width=True)
-
-
 
 #st.subheader('Boxplot graph:')
 #boxplot = px.box(box_plot_results, x="variant", y="CR", color="variant")
@@ -178,10 +178,10 @@ st.table(table_bayes_cr)
 st.subheader('Guidance about choosing the threshold')
 
 st.caption("The choice of threshold depends on the specific context and the decision-makers' preferences. Here’s a step-by-step approach to determining the threshold:")
-st.caption("**Assess the Impact:** Consider the potential impact of the change on key business metrics.")
-st.caption("**Evaluate Costs and Reversibility:** Understand the costs involved in implementing the change and how easy it is to revert if needed.")
-st.caption("**Gauge Risk Appetite:** Determine the organization’s tolerance for risk.")
-st.caption("**Set the Threshold:** Based on the above factors, choose a probability threshold that balances confidence with the need for action.")
+st.caption("**Assess the impact:** Consider the potential impact of the change on key business metrics.")
+st.caption("**Evaluate costs and reversibility:** Understand the costs involved in implementing the change and how easy it is to revert if needed.")
+st.caption("**Gauge risk appetite:** Determine the organization’s tolerance for risk.")
+st.caption("**Set the threshold:** Based on the above factors, choose a probability threshold that balances confidence with the need for action.")
 
 
 st.subheader('Summary')
@@ -191,3 +191,6 @@ st.caption("**Low threshold (e.g., 70%):** Suitable for low-cost, easily reversi
 
 st.caption("Do you wanna contribute to this project?")
 st.link_button("Donate", "https://donate.stripe.com/5kAbLQ0Nk1v85nqfZ0")
+
+st.caption("Do you need an experimentation program?")
+st.link_button("Contact us", "https://sterlingdata.webflow.io/company/contact")
