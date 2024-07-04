@@ -21,45 +21,46 @@ def getAlphaBeta(mu, sigma):
 with st.expander('Settings'):
   st.markdown('**What can this app do?**')
   st.caption('This app shows the use of bayesian statistics for AB Testing using the beta distribution. ')
-  st.latex(r'''
-    prior:Beta(a, b);  posterior:  Beta(x,y)
-    ''')
-  st.latex(r'''
-    x = NumberOfSuccesses + a
-    ''')
-  st.latex(r'''
-    y = NumberOfObservations - NumberOfSuccesses - b
-    ''')
+
+  st.caption('prior: Beta(a, b);  posterior:  Beta(x,y)')
+  st.caption('x = NumberOfSuccesses + a')
+  st.caption('y = NumberOfObservations - NumberOfSuccesses - b')
+
   #st.info('This app shows the use of bayesian statistics for AB Testing.')
   st.markdown('**How to use the app?**')
-  st.caption('1. Find your optimal beta priors')
+  st.caption('1. Find your optimal beta priors using the Average CR and standard deviation.')
   st.caption('2. Select number of variants you want to analyze.')
   st.caption('3. Add your values and voilà.')
-  mu_value = st.number_input("Average CR", value=0.045, placeholder="Type the A prior here", min_value=0.0, max_value=50000.0)
-  sigma_value = st.number_input("Standard Deviation", value=0.1, placeholder="Type the B prior here", min_value=0.0, max_value=50000.0)
+  on = st.toggle("Customize your priors")
+  mu_value = 0.045
+  sigma_value = 0.1
+  if on:
+    st.caption("Average CR: 0.045 ; Standard Deviation: 0.1 as pre-values")
+    mu_value = st.number_input("Average CR", value=0.045, placeholder="Type the A prior here", min_value=0.0, max_value=50000.0)
+    sigma_value = st.number_input("Standard Deviation", value=0.1, placeholder="Type the B prior here", min_value=0.0, max_value=50000.0)
   beta_prior_results = getAlphaBeta(mu_value, sigma_value)
   #st.warning('To engage with the app: <br />1. Find your optimal beta priors <br /> 2. Select number of variants you want to analyze. <br /> 3. Add your values and voilá.')
   variant_number = st.slider("How many variants you will analyze?", 2, 4, 2)
   control_users = st.number_input("Control users", value=1000, placeholder="Type the control users here", min_value=0)
-  control_purchases = st.number_input("Control purchases", value=50, placeholder="Type the control purchases here", min_value=0)
+  control_purchases = st.number_input("Control interactions", value=50, placeholder="Type the control purchases here", min_value=0)
   v1_users = st.number_input("V1 users", value=1000, placeholder="Type a V1 users here", min_value=0)
-  v1_purchases = st.number_input("V1 purchases", value=50, placeholder="Type a V1 purchases here", min_value=0)
+  v1_purchases = st.number_input("V1 interactions", value=50, placeholder="Type a V1 purchases here", min_value=0)
   variant_name = ['control', 'v1']
   values_list = [[control_users,control_purchases],
                [v1_users,v1_purchases]]
 
   if variant_number == 3:
    v2_users = st.number_input("V2 users", value=1000, placeholder="Type a V2 users here", min_value=0)
-   v2_purchases = st.number_input("V2 purchases", value=50, placeholder="Type a V2 purchases here", min_value=0)
+   v2_purchases = st.number_input("V2 interactions", value=50, placeholder="Type a V2 purchases here", min_value=0)
    variant_name = ['control', 'v1', 'v2']
    values_list = [[control_users,control_purchases],
                [v1_users,v1_purchases],
                [v2_users,v2_purchases]]
   if variant_number == 4:
    v2_users = st.number_input("V2 users", value=1000, placeholder="Type a V2 users here", min_value=0)
-   v2_purchases = st.number_input("V2 purchases", value=50, placeholder="Type a V2 purchases here", min_value=0)
+   v2_purchases = st.number_input("V2 interactions", value=50, placeholder="Type a V2 purchases here", min_value=0)
    v3_users = st.number_input("V3 users", value=1000, placeholder="Type a V3 users here", min_value=0)
-   v3_purchases = st.number_input("V3 purchases", value=50, placeholder="Type a V3 purchases here", min_value=0)
+   v3_purchases = st.number_input("V3 interactions", value=50, placeholder="Type a V3 purchases here", min_value=0)
    variant_name = ['control', 'v1', 'v2', 'v3']
    values_list = [[control_users,control_purchases],
                [v1_users,v1_purchases],
@@ -122,7 +123,9 @@ for i in range(len(values_list[0:])):
     box_plot_results = pd.concat([box_plot_results, new_df], ignore_index=True)
 
 
-tab0, tab1, tab2 = st.tabs(["All Data", "Difference vs Control", "Prior and Posterior Data"])
+
+tab0, tab1, tab2 = st.tabs(["All Variants", "Difference vs Control", "Prior and Posterior Data"])
+
 
 
   
