@@ -123,7 +123,9 @@ for i in range(len(values_list[0:])):
     box_plot_results = pd.concat([box_plot_results, new_df], ignore_index=True)
 
 
+
 tab0, tab1, tab2 = st.tabs(["All Variants", "Difference vs Control", "Prior and Posterior Data"])
+
 
 
   
