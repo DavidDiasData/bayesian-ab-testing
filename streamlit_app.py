@@ -22,9 +22,9 @@ with st.expander('Settings'):
   st.markdown('**What can this app do?**')
   st.caption('This app shows the use of bayesian statistics for AB Testing using the beta distribution. ')
 
-  st.caption('prior: Beta(a, b);  posterior:  Beta(x,y)')
-  st.caption('x = NumberOfSuccesses + a')
-  st.caption('y = NumberOfObservations - NumberOfSuccesses - b')
+  st.caption('prior: Beta(α, β);  posterior:  Beta(x,y)')
+  st.caption('x = NumberOfSuccesses + α')
+  st.caption('y = NumberOfObservations - NumberOfSuccesses - β')
 
   #st.info('This app shows the use of bayesian statistics for AB Testing.')
   st.markdown('**How to use the app?**')
@@ -38,7 +38,13 @@ with st.expander('Settings'):
     st.caption("Average CR: 0.045 ; Standard Deviation: 0.1 as pre-values")
     mu_value = st.number_input("Average CR", value=0.045, placeholder="Type the A prior here", min_value=0.0, max_value=50000.0)
     sigma_value = st.number_input("Standard Deviation", value=0.1, placeholder="Type the B prior here", min_value=0.0, max_value=50000.0)
+
+
   beta_prior_results = getAlphaBeta(mu_value, sigma_value)
+  beta_data = {'alpha': beta_prior_results['alpha'],
+ 'beta': beta_prior_results['beta']}
+  table_beta = pd.DataFrame(data=beta_data, index=[0])
+  st.table(table_beta)
   #st.warning('To engage with the app: <br />1. Find your optimal beta priors <br /> 2. Select number of variants you want to analyze. <br /> 3. Add your values and voilá.')
   variant_number = st.slider("How many variants you will analyze?", 2, 4, 2)
   control_users = st.number_input("Control users", value=1000, placeholder="Type the control users here", min_value=0)
@@ -130,12 +136,12 @@ tab0, tab1, tab2 = st.tabs(["All Variants", "Difference vs Control", "Prior and 
 
   
 with tab0:
-  st.subheader('Boxplot graph:')
+  #st.subheader('Boxplot graph:')
   boxplot = px.box(box_plot_results, x="variant", y="CR", color="variant")
   st.plotly_chart(boxplot, use_container_width=True)
 
 with tab1:
-  st.subheader('Boxplot graph:')
+  #st.subheader('Boxplot graph:')
   box_plot_results_wo_control = box_plot_results.loc[box_plot_results['variant'] != 'control']
   boxplot_diff = px.box(box_plot_results_wo_control, x="variant", y="diff", color="variant")
   st.plotly_chart(boxplot_diff, use_container_width=True)
@@ -151,6 +157,7 @@ with tab2:
     # Reduce opacity to see both histograms
   fig.update_traces(opacity=0.75)
   st.plotly_chart(fig, theme="streamlit")
+  table_beta = pd.DataFrame(data=beta_data, index=[0])
 
 #st.subheader('Boxplot graph:')
 #boxplot = px.box(box_plot_results, x="variant", y="CR", color="variant")
