@@ -10,6 +10,7 @@ import plotly.figure_factory as ff
 # Page title
 st.set_page_config(page_title='Bayesian AB Testing Calculator', page_icon='📊')
 st.title('📊 Bayesian AB Testing Calculator')
+st.caption('Made by :blue[Sterling]')
 
 def getAlphaBeta(mu, sigma):
     alpha = mu**2 * ((1 - mu) / sigma**2 - 1 / mu)
@@ -207,3 +208,6 @@ st.link_button("Donate", "https://donate.stripe.com/5kAbLQ0Nk1v85nqfZ0")
 
 st.caption("Do you need an experimentation program?")
 st.link_button("Contact us", "https://sterlingdata.webflow.io/company/contact")
+
+
+st.caption('Sterling @ 2024')
