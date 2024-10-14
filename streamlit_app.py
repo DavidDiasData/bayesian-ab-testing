@@ -207,7 +207,7 @@ st.caption("Do you wanna contribute to this project?")
 st.link_button("Donate", "https://donate.stripe.com/5kAbLQ0Nk1v85nqfZ0")
 
 st.caption("Do you need an experimentation program?")
-st.link_button("Contact us", "https://sterlingdata.webflow.io/company/contact")
+st.link_button("Contact us", "https://sterlingdata.webflow.io/company/contact?tool=bayesian_ab_testing_calculator")
 
 
 st.caption('Sterling @ 2024')
