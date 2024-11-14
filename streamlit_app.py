@@ -211,3 +211,4 @@ st.link_button("Contact us", "https://sterlingdata.webflow.io/company/contact?to
 
 
 st.caption('Sterling @ 2024')
+st.caption('Updated: 14/11/2024')
