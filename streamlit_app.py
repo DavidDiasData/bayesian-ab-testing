@@ -210,5 +210,5 @@ st.caption("Do you need an experimentation program?")
 st.link_button("Contact us", "https://sterlingdata.webflow.io/company/contact?tool=bayesian_ab_testing_calculator")
 
 
-st.caption('Sterling @ 2024')
-st.caption('Updated: 14/11/2024')
+st.caption('Sterling @ 2025')
+st.caption('Updated: 10/01/2025')
