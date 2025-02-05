@@ -204,11 +204,11 @@ st.caption("**Moderate threshold (e.g., 80%):** Suitable for balanced decision-m
 st.caption("**Low threshold (e.g., 70%):** Suitable for low-cost, easily reversible decisions with minor impact.")
 
 st.caption("Do you wanna contribute to this project?")
-st.link_button("Donate", "https://donate.stripe.com/5kAbLQ0Nk1v85nqfZ0")
+st.link_button("Donate", "https://donate.stripe.com/6oEaFe4TeegDcF25kl")
 
 st.caption("Do you need an experimentation program?")
 st.link_button("Contact us", "https://sterlingdata.webflow.io/company/contact?tool=bayesian_ab_testing_calculator")
 
 
-st.caption('Sterling @ 2024')
-st.caption('Updated: 14/11/2024')
+st.caption('Sterling @ 2025')
+st.caption('Updated: 05/02/2025')
