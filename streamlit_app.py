@@ -93,6 +93,12 @@ with st.expander('Settings'):
       
   if type_input_data == 'Upload file':
     uploaded_file = st.file_uploader("Upload a file (CSV files only*)")
+    with st.popover("How to use it", width="stretch"):
+      st.markdown('**Upload the data with the following structure**')
+      table_example = pd.DataFrame(data={"control_users": 1000, "control_conversions": 50,
+                         "v1_users": 1000, "v1_conversions": 50, }, index=[0])
+      table_example
+      
 
     pass  # Initialize values_list as an empty list
 
