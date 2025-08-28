@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 import plotly.figure_factory as ff
 
+
 # Page title
 st.set_page_config(page_title='Bayesian AB Testing Calculator',
                    page_icon='📊',
@@ -20,7 +21,7 @@ st.set_page_config(page_title='Bayesian AB Testing Calculator',
 st.title('📊 Bayesian AB Testing Calculator')
 st.caption('Made by :blue[Sterling]')
 
-st.caption('🚀 :green[New feature:] Upload your CSV files')
+st.caption('🚀 :green[Summer bonus:] Share your reports with others')
 st.caption('💪🏾 :blue[Work in progress:] Connect your Google Sheets and BigQuery accounts')
 
 def getAlphaBeta(mu, sigma):
@@ -60,31 +61,72 @@ with st.expander('Settings'):
   variant_number = st.slider("How many variants you will analyze?", 2, 4, 2)
   type_input_data = st.selectbox('Select your data source', ['Manual','Upload file','Google Sheets / BigQuery Connection'])
   st.divider()  # 👈 Draws a horizontal rule
+  initial_url = str(st.context.url)
+  
+  control_users_value = 1000
+  control_purchases_value = 50
+  v1_users_value = 1000
+  v1_purchases_value = 50
+  v2_users_value = 1000
+  v2_purchases_value = 50
+  v3_users_value = 1000
+  v3_purchases_value = 50
+
+
+
+  if st.query_params["share_link"] == 'true':
+    control_users_value = int(st.query_params["control_users"])
+    control_purchases_value = int(st.query_params["control_conversions"])
+
+    v1_users_value = int(st.query_params["v1_users"])
+    v1_purchases_value = int(st.query_params["v1_conversions"])
+    if 'share_link' not in st.session_state:
+      st.toast('Someone has sent you this report.', icon='😍')
+      st.session_state.share_link = True
+      
+
+    if st.query_params["variants"] == 3:
+      
+      v2_users_value = int(st.query_params["v2_users"])
+      v2_purchases_value = int(st.query_params["v2_conversions"])
+
+    if st.query_params["variants"] == 4:
+
+      v2_users_value = int(st.query_params["v2_users"])
+      v2_purchases_value = int(st.query_params["v2_conversions"])
+
+      v3_users_value = int(st.query_params["v3_users"])
+      v3_purchases_value = int(st.query_params["v3_conversions"])
+
+
+
+
+      
   
   #manual_input, upload_file, google_connector = st.tabs(["Manual", "Upload file", "Google Sheets /BigQuery Connection"])
 
   if type_input_data == 'Manual':
-    control_users = st.number_input("Control users", value=1000, placeholder="Type the control users here", min_value=0)
-    control_purchases = st.number_input("Control interactions", value=50, placeholder="Type the control purchases here", min_value=0)
-    v1_users = st.number_input("V1 users", value=1000, placeholder="Type a V1 users here", min_value=0)
-    v1_purchases = st.number_input("V1 interactions", value=50, placeholder="Type a V1 purchases here", min_value=0)
+    control_users = st.number_input("Control users", value=control_users_value, placeholder="Type the control users here", min_value=0)
+    control_purchases = st.number_input("Control interactions", value=control_purchases_value, placeholder="Type the control purchases here", min_value=0)
+    v1_users = st.number_input("V1 users", value=v1_users_value, placeholder="Type a V1 users here", min_value=0)
+    v1_purchases = st.number_input("V1 interactions", value=v1_purchases_value, placeholder="Type a V1 purchases here", min_value=0)
     variant_name = ['control', 'v1']
     values_list = [[control_users,control_purchases],
                 [v1_users,v1_purchases]]
 
 
     if variant_number == 3:
-      v2_users = st.number_input("V2 users", value=1000, placeholder="Type a V2 users here", min_value=0)
-      v2_purchases = st.number_input("V2 interactions", value=50, placeholder="Type a V2 purchases here", min_value=0)
+      v2_users = st.number_input("V2 users", value=v2_users_value, placeholder="Type a V2 users here", min_value=0)
+      v2_purchases = st.number_input("V2 interactions", value=v2_purchases_value, placeholder="Type a V2 purchases here", min_value=0)
       variant_name = ['control', 'v1', 'v2']
       values_list = [[control_users,control_purchases],
                   [v1_users,v1_purchases],
                   [v2_users,v2_purchases]]
     if variant_number == 4:
-      v2_users = st.number_input("V2 users", value=1000, placeholder="Type a V2 users here", min_value=0)
-      v2_purchases = st.number_input("V2 interactions", value=50, placeholder="Type a V2 purchases here", min_value=0)
-      v3_users = st.number_input("V3 users", value=1000, placeholder="Type a V3 users here", min_value=0)
-      v3_purchases = st.number_input("V3 interactions", value=50, placeholder="Type a V3 purchases here", min_value=0)
+      v2_users = st.number_input("V2 users", value=v2_users_value, placeholder="Type a V2 users here", min_value=0)
+      v2_purchases = st.number_input("V2 interactions", value=v2_purchases_value, placeholder="Type a V2 purchases here", min_value=0)
+      v3_users = st.number_input("V3 users", value=v3_users_value, placeholder="Type a V3 users here", min_value=0)
+      v3_purchases = st.number_input("V3 interactions", value=v3_purchases_value, placeholder="Type a V3 purchases here", min_value=0)
       variant_name = ['control', 'v1', 'v2', 'v3']
       values_list = [[control_users,control_purchases],
                   [v1_users,v1_purchases],
@@ -306,6 +348,25 @@ if 'values_list' in globals():
       icon=":material/download:"
   )
     st.toast('Your report was created!', icon='😍')
+
+  if st.button("Create share link", type="primary"):
+    if variant_number == 2:
+      url_link = st.context.url + '?share_link=true' + '&variants=' + str(variant_number) + '&control_users=' + str(control_users) + '&control_conversions=' + str(control_purchases) + '&v1_users=' + str(v1_users) + '&v1_conversions=' + str(v1_purchases)
+      
+      
+    if variant_number == 3:
+      url_link = st.context.url + '?share_link=true' + '&variants=' + str(variant_number) + '&control_users=' + str(control_users) + '&control_conversions=' + str(control_purchases) + '&v1_users=' + str(v1_users) + '&v1_conversions=' + str(v1_purchases) + '&v2_users=' + str(v2_users) + '&v2_conversions=' + str(v2_purchases)
+      
+      
+    if variant_number == 4:
+      url_link = st.context.url + '?share_link=true' + '&variants=' + str(variant_number) + '&control_users=' + str(control_users) + '&control_conversions=' + str(control_purchases) + '&v1_users=' + str(v1_users) + '&v1_conversions=' + str(v1_purchases) + '&v2_users=' + str(v2_users) + '&v2_conversions=' + str(v2_purchases) + '&v2_users=' + str(v2_users) + '&v3_conversions=' + str(v3_purchases)
+      
+      
+    st.write(
+      url_link 
+  )
+    st.success('The link was created successfully!')
+    
   
 
 st.subheader('Guidance about choosing the threshold')
@@ -330,4 +391,4 @@ st.link_button("Contact us", "https://sterlingdata.webflow.io/company/contact?to
 
 
 st.caption('Sterling @ 2025')
-st.caption('Updated: 11/08/2025')
+st.caption('Updated: 01/09/2025')
