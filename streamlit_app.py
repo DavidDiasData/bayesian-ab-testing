@@ -59,7 +59,7 @@ with st.expander('Settings'):
   variant_number = st.slider("How many variants you will analyze?", 2, 4, 2)
   options = ['Manual','Upload file','Google Sheets / BigQuery Connection']
   type_input_data = st.segmented_control(
-    "Select your data source", options, selection_mode="single", width="stretch")
+    "Select your data source", options, selection_mode="single", width="stretch", default='Manual')
   #type_input_data = st.selectbox('Select your data source', ['Manual','Upload file','Google Sheets / BigQuery Connection'])
   st.divider()  # 👈 Draws a horizontal rule
 
