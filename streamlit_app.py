@@ -7,7 +7,6 @@ import plotly.graph_objects as go
 import plotly.express as px
 import plotly.figure_factory as ff
 
-
 # Page title
 st.set_page_config(page_title='Bayesian AB Testing Calculator',
                    page_icon='📊',
@@ -20,7 +19,7 @@ st.set_page_config(page_title='Bayesian AB Testing Calculator',
 st.title('📊 Bayesian AB Testing Calculator')
 st.caption('Made by :blue[Sterling]')
 
-st.caption('🚀 :green[Summer bonus:] Share your reports with others')
+st.caption('🚀 :green[New feature:] Upload your CSV files')
 st.caption('💪🏾 :blue[Work in progress:] Connect your Google Sheets and BigQuery accounts')
 
 def getAlphaBeta(mu, sigma):
@@ -63,6 +62,7 @@ with st.expander('Settings'):
     "Select your data source", options, selection_mode="single", width="stretch")
   #type_input_data = st.selectbox('Select your data source', ['Manual','Upload file','Google Sheets / BigQuery Connection'])
   st.divider()  # 👈 Draws a horizontal rule
+
   initial_url = str(st.context.url)
   
   control_users_value = 1000
@@ -102,31 +102,32 @@ with st.expander('Settings'):
   except KeyError:
     pass
 
+
   
   
 
   if type_input_data == 'Manual':
-    control_users = st.number_input("Control users", value=control_users_value, placeholder="Type the control users here", min_value=0)
-    control_purchases = st.number_input("Control interactions", value=control_purchases_value, placeholder="Type the control purchases here", min_value=0)
-    v1_users = st.number_input("V1 users", value=v1_users_value, placeholder="Type a V1 users here", min_value=0)
-    v1_purchases = st.number_input("V1 interactions", value=v1_purchases_value, placeholder="Type a V1 purchases here", min_value=0)
+    control_users = st.number_input("Control users", value=1000, placeholder="Type the control users here", min_value=0)
+    control_purchases = st.number_input("Control interactions", value=50, placeholder="Type the control purchases here", min_value=0)
+    v1_users = st.number_input("V1 users", value=1000, placeholder="Type a V1 users here", min_value=0)
+    v1_purchases = st.number_input("V1 interactions", value=50, placeholder="Type a V1 purchases here", min_value=0)
     variant_name = ['control', 'v1']
     values_list = [[control_users,control_purchases],
                 [v1_users,v1_purchases]]
 
 
     if variant_number == 3:
-      v2_users = st.number_input("V2 users", value=v2_users_value, placeholder="Type a V2 users here", min_value=0)
-      v2_purchases = st.number_input("V2 interactions", value=v2_purchases_value, placeholder="Type a V2 purchases here", min_value=0)
+      v2_users = st.number_input("V2 users", value=1000, placeholder="Type a V2 users here", min_value=0)
+      v2_purchases = st.number_input("V2 interactions", value=50, placeholder="Type a V2 purchases here", min_value=0)
       variant_name = ['control', 'v1', 'v2']
       values_list = [[control_users,control_purchases],
                   [v1_users,v1_purchases],
                   [v2_users,v2_purchases]]
     if variant_number == 4:
-      v2_users = st.number_input("V2 users", value=v2_users_value, placeholder="Type a V2 users here", min_value=0)
-      v2_purchases = st.number_input("V2 interactions", value=v2_purchases_value, placeholder="Type a V2 purchases here", min_value=0)
-      v3_users = st.number_input("V3 users", value=v3_users_value, placeholder="Type a V3 users here", min_value=0)
-      v3_purchases = st.number_input("V3 interactions", value=v3_purchases_value, placeholder="Type a V3 purchases here", min_value=0)
+      v2_users = st.number_input("V2 users", value=1000, placeholder="Type a V2 users here", min_value=0)
+      v2_purchases = st.number_input("V2 interactions", value=50, placeholder="Type a V2 purchases here", min_value=0)
+      v3_users = st.number_input("V3 users", value=1000, placeholder="Type a V3 users here", min_value=0)
+      v3_purchases = st.number_input("V3 interactions", value=50, placeholder="Type a V3 purchases here", min_value=0)
       variant_name = ['control', 'v1', 'v2', 'v3']
       values_list = [[control_users,control_purchases],
                   [v1_users,v1_purchases],
@@ -349,6 +350,7 @@ if 'values_list' in globals():
   )
     st.toast('Your report was created!', icon='😍')
 
+
   if st.button("Create share link", type="primary"):
     if variant_number == 2:
       url_link = st.context.url + '?share_link=true' + '&variants=' + str(variant_number) + '&control_users=' + str(control_users) + '&control_conversions=' + str(control_purchases) + '&v1_users=' + str(v1_users) + '&v1_conversions=' + str(v1_purchases)
@@ -391,4 +393,4 @@ st.link_button("Contact us", "https://sterlingdata.webflow.io/company/contact?to
 
 
 st.caption('Sterling @ 2025')
-st.caption('Updated: 01/09/2025')
+st.caption('Updated: 29/09/2025')
