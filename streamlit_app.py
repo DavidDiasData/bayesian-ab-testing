@@ -17,7 +17,6 @@ st.set_page_config(page_title='Bayesian AB Testing Calculator',
         'About': "Made by David Dias Rodríguez. Sterling @ 2025"
     })
 
-
 st.title('📊 Bayesian AB Testing Calculator')
 st.caption('Made by :blue[Sterling]')
 
@@ -59,7 +58,10 @@ with st.expander('Settings'):
   table_beta = pd.DataFrame(data=beta_data, index=[0])
   st.table(table_beta)
   variant_number = st.slider("How many variants you will analyze?", 2, 4, 2)
-  type_input_data = st.selectbox('Select your data source', ['Manual','Upload file','Google Sheets / BigQuery Connection'])
+  options = ['Manual','Upload file','Google Sheets / BigQuery Connection']
+  type_input_data = st.segmented_control(
+    "Select your data source", options, selection_mode="single", width="stretch")
+  #type_input_data = st.selectbox('Select your data source', ['Manual','Upload file','Google Sheets / BigQuery Connection'])
   st.divider()  # 👈 Draws a horizontal rule
   initial_url = str(st.context.url)
   
@@ -73,37 +75,35 @@ with st.expander('Settings'):
   v3_purchases_value = 50
 
 
+  try:
+    if st.query_params["share_link"] == 'true':
+      control_users_value = int(st.query_params["control_users"])
+      control_purchases_value = int(st.query_params["control_conversions"])
 
-  if st.query_params["share_link"] == 'true':
-    control_users_value = int(st.query_params["control_users"])
-    control_purchases_value = int(st.query_params["control_conversions"])
+      v1_users_value = int(st.query_params["v1_users"])
+      v1_purchases_value = int(st.query_params["v1_conversions"])
+      if 'share_link' not in st.session_state:
+        st.toast('Someone has sent you this report.', icon='😍')
+        st.session_state.share_link = True
+        
 
-    v1_users_value = int(st.query_params["v1_users"])
-    v1_purchases_value = int(st.query_params["v1_conversions"])
-    if 'share_link' not in st.session_state:
-      st.toast('Someone has sent you this report.', icon='😍')
-      st.session_state.share_link = True
-      
+      if st.query_params["variants"] == 3:
+        
+        v2_users_value = int(st.query_params["v2_users"])
+        v2_purchases_value = int(st.query_params["v2_conversions"])
 
-    if st.query_params["variants"] == 3:
-      
-      v2_users_value = int(st.query_params["v2_users"])
-      v2_purchases_value = int(st.query_params["v2_conversions"])
+      if st.query_params["variants"] == 4:
 
-    if st.query_params["variants"] == 4:
+        v2_users_value = int(st.query_params["v2_users"])
+        v2_purchases_value = int(st.query_params["v2_conversions"])
 
-      v2_users_value = int(st.query_params["v2_users"])
-      v2_purchases_value = int(st.query_params["v2_conversions"])
+        v3_users_value = int(st.query_params["v3_users"])
+        v3_purchases_value = int(st.query_params["v3_conversions"])
+  except KeyError:
+    pass
 
-      v3_users_value = int(st.query_params["v3_users"])
-      v3_purchases_value = int(st.query_params["v3_conversions"])
-
-
-
-
-      
   
-  #manual_input, upload_file, google_connector = st.tabs(["Manual", "Upload file", "Google Sheets /BigQuery Connection"])
+  
 
   if type_input_data == 'Manual':
     control_users = st.number_input("Control users", value=control_users_value, placeholder="Type the control users here", min_value=0)
@@ -362,8 +362,8 @@ if 'values_list' in globals():
       url_link = st.context.url + '?share_link=true' + '&variants=' + str(variant_number) + '&control_users=' + str(control_users) + '&control_conversions=' + str(control_purchases) + '&v1_users=' + str(v1_users) + '&v1_conversions=' + str(v1_purchases) + '&v2_users=' + str(v2_users) + '&v2_conversions=' + str(v2_purchases) + '&v2_users=' + str(v2_users) + '&v3_conversions=' + str(v3_purchases)
       
       
-    st.write(
-      url_link 
+    st.code(
+      url_link, language=None, wrap_lines=True
   )
     st.success('The link was created successfully!')
     
