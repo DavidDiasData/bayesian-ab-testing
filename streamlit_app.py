@@ -19,7 +19,7 @@ st.set_page_config(page_title='Bayesian AB Testing Calculator',
 st.title('📊 Bayesian AB Testing Calculator')
 st.caption('Made by :blue[Sterling]')
 
-st.caption('🚀 :green[New feature:] Upload your CSV files')
+st.caption('🚀 :green[Summer bonus:] Share your results with others')
 st.caption('💪🏾 :blue[Work in progress:] Connect your Google Sheets and BigQuery accounts')
 
 def getAlphaBeta(mu, sigma):
