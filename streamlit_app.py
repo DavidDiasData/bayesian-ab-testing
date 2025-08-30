@@ -57,22 +57,15 @@ with st.expander('Settings'):
   table_beta = pd.DataFrame(data=beta_data, index=[0])
   st.table(table_beta)
   variant_number = st.slider("How many variants you will analyze?", 2, 4, 2)
-  options = ['Manual','Upload file','Google Sheets / BigQuery Connection']
-  type_input_data = st.segmented_control(
-    "Select your data source", options, selection_mode="single", width="stretch", default='Manual')
-  #type_input_data = st.selectbox('Select your data source', ['Manual','Upload file','Google Sheets / BigQuery Connection'])
+  #options = ['Manual','Upload file','Google Sheets / BigQuery Connection']
+  #type_input_data = st.segmented_control(
+  #  "Select your data source", options, selection_mode="single", width="stretch", default='Manual')
+  type_input_data = st.selectbox('Select your data source', ['Manual','Upload file','Google Sheets / BigQuery Connection'])
   st.divider()  # 👈 Draws a horizontal rule
 
   initial_url = str(st.context.url)
   
-  control_users_value = 1000
-  control_purchases_value = 50
-  v1_users_value = 1000
-  v1_purchases_value = 50
-  v2_users_value = 1000
-  v2_purchases_value = 50
-  v3_users_value = 1000
-  v3_purchases_value = 50
+
 
 
   try:
@@ -100,34 +93,41 @@ with st.expander('Settings'):
         v3_users_value = int(st.query_params["v3_users"])
         v3_purchases_value = int(st.query_params["v3_conversions"])
   except KeyError:
-    pass
+      control_users_value = 1000
+      control_purchases_value = 50
+      v1_users_value = 1000
+      v1_purchases_value = 50
+      v2_users_value = 1000
+      v2_purchases_value = 50
+      v3_users_value = 1000
+      v3_purchases_value = 50
 
 
   
   
 
   if type_input_data == 'Manual':
-    control_users = st.number_input("Control users", value=1000, placeholder="Type the control users here", min_value=0)
-    control_purchases = st.number_input("Control interactions", value=50, placeholder="Type the control purchases here", min_value=0)
-    v1_users = st.number_input("V1 users", value=1000, placeholder="Type a V1 users here", min_value=0)
-    v1_purchases = st.number_input("V1 interactions", value=50, placeholder="Type a V1 purchases here", min_value=0)
+    control_users = st.number_input("Control users", value=control_users_value, placeholder="Type the control users here", min_value=0)
+    control_purchases = st.number_input("Control interactions", value=control_purchases_value, placeholder="Type the control purchases here", min_value=0, max_value=control_users_value)
+    v1_users = st.number_input("V1 users", value=v1_users_value, placeholder="Type a V1 users here", min_value=0)
+    v1_purchases = st.number_input("V1 interactions", value=v1_purchases_value, placeholder="Type a V1 purchases here", min_value=0, max_value=v1_users_value)
     variant_name = ['control', 'v1']
     values_list = [[control_users,control_purchases],
                 [v1_users,v1_purchases]]
 
 
     if variant_number == 3:
-      v2_users = st.number_input("V2 users", value=1000, placeholder="Type a V2 users here", min_value=0)
-      v2_purchases = st.number_input("V2 interactions", value=50, placeholder="Type a V2 purchases here", min_value=0)
+      v2_users = st.number_input("V2 users", value=v2_users_value, placeholder="Type a V2 users here", min_value=0)
+      v2_purchases = st.number_input("V2 interactions", value=v2_purchases_value, placeholder="Type a V2 purchases here", min_value=0, max_value=v2_users_value)
       variant_name = ['control', 'v1', 'v2']
       values_list = [[control_users,control_purchases],
                   [v1_users,v1_purchases],
                   [v2_users,v2_purchases]]
     if variant_number == 4:
-      v2_users = st.number_input("V2 users", value=1000, placeholder="Type a V2 users here", min_value=0)
-      v2_purchases = st.number_input("V2 interactions", value=50, placeholder="Type a V2 purchases here", min_value=0)
-      v3_users = st.number_input("V3 users", value=1000, placeholder="Type a V3 users here", min_value=0)
-      v3_purchases = st.number_input("V3 interactions", value=50, placeholder="Type a V3 purchases here", min_value=0)
+      v2_users = st.number_input("V2 users", value=v2_users_value, placeholder="Type a V2 users here", min_value=0)
+      v2_purchases = st.number_input("V2 interactions", value=v2_purchases_value, placeholder="Type a V2 purchases here", min_value=0, max_value=v2_users_value)
+      v3_users = st.number_input("V3 users", value=v3_users_value, placeholder="Type a V3 users here", min_value=0)
+      v3_purchases = st.number_input("V3 interactions", value=v3_purchases_value, placeholder="Type a V3 purchases here", min_value=0, max_value=v3_users_value)
       variant_name = ['control', 'v1', 'v2', 'v3']
       values_list = [[control_users,control_purchases],
                   [v1_users,v1_purchases],
