@@ -65,7 +65,14 @@ with st.expander('Settings'):
 
   initial_url = str(st.context.url)
   
-
+  control_users_value = 1000
+  control_purchases_value = 50
+  v1_users_value = 1000
+  v1_purchases_value = 50
+  v2_users_value = 1000
+  v2_purchases_value = 50
+  v3_users_value = 1000
+  v3_purchases_value = 50
 
 
   try:
@@ -93,14 +100,8 @@ with st.expander('Settings'):
         v3_users_value = int(st.query_params["v3_users"])
         v3_purchases_value = int(st.query_params["v3_conversions"])
   except KeyError:
-      control_users_value = 1000
-      control_purchases_value = 50
-      v1_users_value = 1000
-      v1_purchases_value = 50
-      v2_users_value = 1000
-      v2_purchases_value = 50
-      v3_users_value = 1000
-      v3_purchases_value = 50
+     pass
+
 
 
   
