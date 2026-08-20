@@ -6,6 +6,7 @@ import plotly
 import plotly.graph_objects as go
 import plotly.express as px
 import plotly.figure_factory as ff
+import requests
 
 # Page title
 st.set_page_config(page_title='Bayesian AB Testing Calculator',
@@ -19,8 +20,8 @@ st.set_page_config(page_title='Bayesian AB Testing Calculator',
 st.title('📊 Bayesian AB Testing Calculator')
 st.caption('Made by :blue[Sterling]')
 
-st.caption('🚀 :green[Summer bonus:] Share your results with others')
-st.caption('💪🏾 :blue[Work in progress:] Connect your Google Sheets and BigQuery accounts')
+st.caption('🚀 :green[New Release:] Connect your Google Sheets and BigQuery accounts')
+st.caption('💪🏾 :blue[Work in progress:] Bayesian AB Testing Calculator 2.0')
 
 def getAlphaBeta(mu, sigma):
     alpha = mu**2 * ((1 - mu) / sigma**2 - 1 / mu)
@@ -267,8 +268,7 @@ if 'values_list' in globals():
   diff_v1 = beta_simulations['v1'] - beta_simulations['control']
   loss_v1 = diff_v1[diff_v1<0]
   loss_list = [((diff_v1 > 0).mean())*100]
-
-  csv = pd.DataFrame(data={'Experiment Name': 'Undefined',
+  data = {'Experiment Name': 'Undefined',
                       'control_users': control_users,
                       'control_conversions': control_purchases,
                         'v1_users': v1_users,
@@ -277,15 +277,15 @@ if 'values_list' in globals():
                             'control_percentil_90_cr': interval_values['control'][1], 
                             'v1_percentil_10_cr': interval_values['v1'][0],
                             'v1_percentil_90_cr': interval_values['v1'][1],
-                            'v1_prob_to_win_control': loss_list[0],}, index=[0])
+                            'v1_prob_to_win_control': loss_list[0],}
+  csv = pd.DataFrame(data=data, index=[0])
 
 
   if variant_number == 3:
     diff_v2 = beta_simulations['v2'] - beta_simulations['control']
     loss_v2 = diff_v2[diff_v2<0]
     loss_list = [((diff_v1 > 0).mean())*100, ((diff_v2 > 0).mean())*100]
-
-    csv = pd.DataFrame(data={'Experiment Name': 'Undefined',
+    data = {'Experiment Name': 'Undefined',
                       'control_users': control_users,
                       'control_conversions': control_purchases,
                         'v1_users': v1_users,
@@ -299,7 +299,8 @@ if 'values_list' in globals():
                             'v2_percentil_10_cr': interval_values['v2'][0],
                             'v2_percentil_90_cr': interval_values['v2'][1],
                             'v1_prob_to_win_control': loss_list[0],
-                            'v2_prob_to_win_control': loss_list[1]}, index=[0])
+                            'v2_prob_to_win_control': loss_list[1]}
+    csv = pd.DataFrame(data=data, index=[0])
 
 
 
@@ -309,7 +310,8 @@ if 'values_list' in globals():
     loss_v2 = diff_v2[diff_v2<0]
     loss_v3 = diff_v3[diff_v3<0]
     loss_list = [((diff_v1 > 0).mean())*100, ((diff_v2 > 0).mean())*100, ((diff_v3 > 0).mean())*100]
-    csv = pd.DataFrame(data={'Experiment Name': 'Undefined',
+
+    data = {'Experiment Name': 'Undefined',
                       'control_users': control_users,
                       'control_conversions': control_purchases,
                         'v1_users': v1_users,
@@ -328,7 +330,8 @@ if 'values_list' in globals():
                             'v3_percentil_90_cr': interval_values['v3'][1],
                             'v1_prob_to_win_control': loss_list[0],
                             'v2_prob_to_win_control': loss_list[1],
-                            'v3_prob_to_win_control': loss_list[2]}, index=[0])
+                            'v3_prob_to_win_control': loss_list[2]}
+    csv = pd.DataFrame(data=data, index=[0])
 
 
   d = {'variant': variant_name[1:],
@@ -371,6 +374,13 @@ if 'values_list' in globals():
     st.success('The link was created successfully!')
     
   
+
+url_send_data_post_request = st.text_input("Send the data to https://...", "https://www.example.com")
+
+if st.button("Send data"):
+    r = requests.post(url_send_data_post_request, data=data)
+    st.toast('The data was sent!', icon='😍')
+
 
 st.subheader('Guidance about choosing the threshold')
 
